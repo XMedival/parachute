@@ -2,6 +2,7 @@
 
 namespace Parachute\Console\Commands;
 
+
 class MakeModelCommand implements Command
 {
     public function handle(array $args, string $basePath): int
@@ -14,7 +15,6 @@ class MakeModelCommand implements Command
 
         $modelName = strtoupper($args[0][0]) . substr($args[0], 1);
         $modelPath = $basePath . "/app/Models/{$modelName}.php";
-        d($modelPath);
 
         if (file_exists($modelPath)) {
             echo "\033[31m✗ Model already exists: {$modelName}\033[0m\n";
@@ -30,6 +30,10 @@ class {$modelName} extends Model
     
 }";
 
+        $dir = dirname($modelPath);
+        if (!is_dir($dir)) {
+            mkdir($dir, 0755, true);
+        }
         echo "\033[36mCreating model: {$modelName}...\033[0m\n";
         echo "test: {$modelPath}\n";
         touch($modelPath);

@@ -128,6 +128,12 @@ class QueryBuilder
         return $this->connection->update($sql, $bindings);
     }
 
+    public function delete(): int
+    {
+        $sql = "DELETE FROM {$this->table}" . $this->buildWheres();
+        return $this->connection->delete($sql, $this->bindings);
+    }
+
     protected function buildSelect(): string
     {
         $columns = implode(', ', $this->columns);

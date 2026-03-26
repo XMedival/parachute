@@ -63,6 +63,15 @@ if (!function_exists('view')) {
     }
 }
 
+if (!function_exists('to_snake_case')) {
+    function to_snake_case(string $input): string
+    {
+        $result = preg_replace('/([a-z])([A-Z])/', '$1_$2', $input);
+        $result = preg_replace('/[\s\-]+/', '_', $result);
+        return strtolower($result);
+    }
+}
+
 if (!function_exists('pluralize')) {
     function pluralize(string $word): string
     {

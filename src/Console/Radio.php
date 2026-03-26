@@ -13,6 +13,8 @@ class Radio
         'make:model' => \Parachute\Console\Commands\MakeModelCommand::class,
         'make:migration' => \Parachute\Console\Commands\MakeMigrationCommand::class,
         'migrate' => \Parachute\Console\Commands\MigrateCommand::class,
+        'migrate:fresh' => \Parachute\Console\Commands\MigrateFreshCommand::class,
+        'migrate:rollback' => \Parachute\Console\Commands\RollbackCommand::class,
         'help' => \Parachute\Console\Commands\HelpCommand::class,
     ];
 

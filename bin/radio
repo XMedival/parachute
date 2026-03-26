@@ -4,6 +4,10 @@
 require __DIR__ . '/../vendor/autoload.php';
 
 use Parachute\Console\Radio;
+use Parachute\Base\App;
+
+$basePath = getcwd();
+$app = new App($basePath);
 
 $radio = new Radio($argv);
 $radio->run();

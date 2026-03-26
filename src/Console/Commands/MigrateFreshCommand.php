@@ -6,7 +6,7 @@ use Parachute\Support\Facades\DB;
 use Parachute\Support\Facades\Schema;
 use Parachute\Database\Blueprint;
 
-class MigrateCommand implements Command
+class MigrateFreshCommand implements Command
 {
     public function handle(array $args, string $basePath): int
     {
@@ -15,27 +15,22 @@ class MigrateCommand implements Command
         $migrationsPath = $basePath . '/database/migrations';
         $migrationFiles = glob($migrationsPath . '/*.php');
 
-        if (!DB::hasTable('migrations')) {
-            $this->createMigrationsTable();
+        $tables = DB::getTables();
+        foreach ($tables as $table) {
+            echo "Dropping table: " . $table . "\n";
+            Schema::dropIfExists($table);
         }
 
-
-        $batch = $this->getNextBatchNumber();
-
-        $migrations = DB::table('migrations')->get();
-        $ranMigrations = array_column($migrations, 'migration');
+        $this->createMigrationsTable();
         foreach ($migrationFiles as $file) {
             $migrationName = basename($file, '.php');
-            if (in_array($migrationName, $ranMigrations)) {
-                continue; // Skip already migrated files
-            }
             $migration = require_once $file;
             if (method_exists($migration, 'up')) {
                 echo "Migrating: " . basename($file) . "\n";
                 $migration->up();
                 DB::table('migrations')->insert([
                     'migration' => "$migrationName",
-                    'batch' => $batch,
+                    'batch' => 1,
                 ]);
             } else {
                 echo "\033[31m✗ Invalid migration file: " . basename($file) . "\033[0m\n";
