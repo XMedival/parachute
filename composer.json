@@ -1,0 +1,17 @@
+{
+    "name": "parachute/parachute",
+    "type": "library",
+    "bin": [
+        "bin/radio"
+    ],
+    "autoload": {
+        "psr-4": {
+            "Parachute\\": "src/"
+        },
+        "files": [
+            "src/Dumper/dump.php",
+            "src/helpers.php"
+        ]
+    },
+    "require": {}
+}
