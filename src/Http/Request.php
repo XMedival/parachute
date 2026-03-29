@@ -27,6 +27,8 @@ class Request
 
     public Arr $cookies;
 
+    public Arr $files;
+
     public string $path;
 
     public string $host;
@@ -51,6 +53,23 @@ class Request
         $r->host = $_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'];
         $r->remote = $_SERVER['REMOTE_ADDR'] . ':' . $_SERVER['REMOTE_PORT'];
         $r->cookies = new Arr($_COOKIE);
+        $r->files = new Arr();
+        foreach ($_FILES as $key => $file) {
+            if (is_array($file['name'])) {
+                $r->files[$key] = [];
+                foreach ($file['name'] as $i => $name) {
+                    $r->files[$key][] = File::fromUpload([
+                        'name' => $file['name'][$i],
+                        'tmp_name' => $file['tmp_name'][$i],
+                        'size' => $file['size'][$i],
+                        'type' => $file['type'][$i],
+                        'error' => $file['error'][$i],
+                    ]);
+                }
+            } else {
+                $r->files[$key] = File::fromUpload($file);
+            }
+        }
         return $r;
     }
 

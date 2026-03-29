@@ -1,12 +1,19 @@
 #!/usr/bin/env php
 <?php
 
-require __DIR__ . '/../vendor/autoload.php';
+// Load the application's autoloader (includes App\ namespace)
+$basePath = getcwd();
+$appAutoload = $basePath . '/vendor/autoload.php';
+if (file_exists($appAutoload)) {
+    require $appAutoload;
+} else {
+    // Fallback to framework autoloader for development
+    require __DIR__ . '/../vendor/autoload.php';
+}
 
 use Parachute\Console\Radio;
 use Parachute\Base\App;
 
-$basePath = getcwd();
 $app = new App($basePath);
 
 $radio = new Radio($argv);

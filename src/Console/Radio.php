@@ -12,9 +12,13 @@ class Radio
         'serve' => \Parachute\Console\Commands\ServeCommand::class,
         'make:model' => \Parachute\Console\Commands\MakeModelCommand::class,
         'make:migration' => \Parachute\Console\Commands\MakeMigrationCommand::class,
+        'make:job' => \Parachute\Console\Commands\MakeJobCommand::class,
         'migrate' => \Parachute\Console\Commands\MigrateCommand::class,
         'migrate:fresh' => \Parachute\Console\Commands\MigrateFreshCommand::class,
         'migrate:rollback' => \Parachute\Console\Commands\RollbackCommand::class,
+        'queue:table' => \Parachute\Console\Commands\QueueTableCommand::class,
+        'queue:work' => \Parachute\Console\Commands\QueueWorkCommand::class,
+        'queue:retry' => \Parachute\Console\Commands\QueueRetryCommand::class,
         'help' => \Parachute\Console\Commands\HelpCommand::class,
     ];
 

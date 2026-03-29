@@ -31,9 +31,10 @@ class Router
     protected function parsePath($path)
     {
         $args = [];
-        $pattern = preg_replace_callback('/\{(\w+)\}/', function ($matches) use (&$args) {
+        $pattern = preg_replace_callback('/\{(\w+)(:\*)?\}/', function ($matches) use (&$args) {
             $args[] = $matches[1];
-            return '([^/]+)';
+            $isWildcard = isset($matches[2]) && $matches[2] === ':*';
+            return $isWildcard ? '(.+)' : '([^/]+)';
         }, rtrim($path, '/'));
         return [
             'pattern' => '#^' . $pattern . '$#',
@@ -74,7 +75,7 @@ class Router
                 array_shift($matches); // Remove the full match
                 $params = array_combine($route['params'], $matches);
                 ob_start();
-                $ret = call_user_func_array($route['handler'], $params);
+                $ret = call_user_func_array($route['handler'], [$request, ...$params]);
                 $output = ob_get_clean();
                 if ($ret instanceof Response) {
                     return $ret;

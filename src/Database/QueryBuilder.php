@@ -118,6 +118,18 @@ class QueryBuilder
         return $this->connection->insert($sql, array_values($data));
     }
 
+    public function insertGetId(array $data): int
+    {
+        $columns = implode(', ', array_keys($data));
+        $placeholders = implode(', ', array_fill(0, count($data), '?'));
+
+        $sql = "INSERT INTO {$this->table} ($columns) VALUES ($placeholders)";
+
+        $this->connection->getPdo()->prepare($sql)->execute(array_values($data));
+
+        return (int) $this->connection->getPdo()->lastInsertId();
+    }
+
     public function update(array $data): int
     {
         $sets = implode(', ', array_map(fn($col) => "$col = ?", array_keys($data)));

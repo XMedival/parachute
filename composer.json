@@ -13,5 +13,11 @@
             "src/helpers.php"
         ]
     },
+    "scripts": {
+        "dev": "npx concurrently -n server,worker -c blue,green \"./vendor/bin/radio serve\" \"./vendor/bin/radio queue:work\"",
+        "serve": "./vendor/bin/radio serve",
+        "work": "./vendor/bin/radio queue:work",
+        "migrate": "./vendor/bin/radio migrate"
+    },
     "require": {}
 }

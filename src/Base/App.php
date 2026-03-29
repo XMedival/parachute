@@ -10,6 +10,7 @@ use Parachute\Support\Container;
 use Parachute\Support\Env;
 use Parachute\View\Factory as ViewFactory;
 use Parachute\Database\DatabaseManager;
+use Parachute\Queue\Queue;
 
 class App extends Container
 {
@@ -40,6 +41,9 @@ class App extends Container
         $dbConfig = $this->get('config')->get('database');
         $dbManager = new DatabaseManager($dbConfig);
         $this->instance('db', $dbManager);
+
+        $queueConfig = $this->get('config')->get('queue', []);
+        $this->instance('queue', new Queue($queueConfig));
 
         $viewFactory = new ViewFactory($this);
         $this->instance('view', $viewFactory);

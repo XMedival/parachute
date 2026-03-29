@@ -1,0 +1,30 @@
+<?php
+
+use Parachute\Support\Facades\Schema;
+use Parachute\Database\Blueprint;
+use Parachute\Database\Migration;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up()
+    {
+        Schema::createIfNotExists('failed_jobs', function ($table) {
+            $table->id();
+            $table->string('queue');
+            $table->text('payload');
+            $table->text('exception');
+            $table->unsignedInteger('failed_at');
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down()
+    {
+        Schema::dropIfExists('failed_jobs');
+    }
+};

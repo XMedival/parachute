@@ -110,4 +110,15 @@ class Response
         $body = ob_get_clean();
         return new self($body, $statusCode, $headers);
     }
+
+    public static function download(File $file, ?string $name = null, array $headers = [])
+    {
+        if ($file === null || !file_exists($file->path)) {
+            return new self('File not found', 404);
+        }
+        $headers['Content-Type'] = $file->type;
+        $headers['Content-Length'] = $file->size;
+        $headers['Content-Disposition'] = 'attachment; filename="' . ($name ?? $file->name) . '"';
+        return new self(file_get_contents($file->path), 200, $headers);
+    }
 }
